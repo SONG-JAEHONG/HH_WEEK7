@@ -27,7 +27,7 @@ public class ReservationService implements ReservationUseCase {
 
     @Override
     public ReservationResponse reserve(ReservationRequest reservationRequest, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        User user = userRepository.findUserById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
         Seat seat = seatRepository.findById(reservationRequest.seatId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 좌석입니다."));
 
         if(!seat.isAvailable()){ //좌석 상태 Available 인지 확인
