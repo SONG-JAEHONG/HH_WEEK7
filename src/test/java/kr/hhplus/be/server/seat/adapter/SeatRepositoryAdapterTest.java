@@ -4,7 +4,7 @@ package kr.hhplus.be.server.seat.adapter;
 import kr.hhplus.be.server.concert.domain.Seat;
 import kr.hhplus.be.server.concert.domain.SeatStatus;
 import kr.hhplus.be.server.concert.infra.persistence.SeatJpaRepository;
-import kr.hhplus.be.server.concert.infra.persistence.SeatRepositoryAdpter;
+import kr.hhplus.be.server.concert.infra.persistence.SeatRepositoryAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,11 +23,11 @@ public class SeatRepositoryAdapterTest {
     @Mock
     private SeatJpaRepository seatJpaRepository;
 
-    private SeatRepositoryAdpter seatRepositoryAdpter;
+    private SeatRepositoryAdapter seatRepositoryAdapter;
 
     @BeforeEach
     void setUp(){
-        seatRepositoryAdpter = new SeatRepositoryAdpter(seatJpaRepository);
+        seatRepositoryAdapter = new SeatRepositoryAdapter(seatJpaRepository);
     }
 
 
@@ -36,7 +36,7 @@ public class SeatRepositoryAdapterTest {
 
         Seat seat = new Seat();
 
-        seatRepositoryAdpter.save(seat);
+        seatRepositoryAdapter.save(seat);
 
         verify(seatJpaRepository).save(seat);
 
@@ -51,7 +51,7 @@ public class SeatRepositoryAdapterTest {
         when(seatJpaRepository.findByStatusAndExpireTimeBefore(status, now)).thenReturn(expected);
 
 
-        List<Seat> result = seatRepositoryAdpter.findByStatusAndBeforeExpire(status, now);
+        List<Seat> result = seatRepositoryAdapter.findByStatusAndBeforeExpire(status, now);
 
 
         assertThat(result).isEqualTo(expected);

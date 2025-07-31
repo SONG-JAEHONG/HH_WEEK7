@@ -80,14 +80,14 @@ public class ConcertRepositoryAdapterTest {
                 new ConcertDate(concert, LocalDate.of(2025, 8, 1)),
                 new ConcertDate(concert, LocalDate.of(2025, 8, 2))
         );
-        when(concertDateJpaRepository.findConcertDatesByconcertId(100L)).thenReturn(concertDates);
+        when(concertDateJpaRepository.findByConcertId(100L)).thenReturn(concertDates);
 
         // when
         List<ConcertDate> result = concertRepositoryAdapter.findConcertDatesByConcertId(100L);
 
         // then
         assertThat(result).hasSize(2).isEqualTo(concertDates);
-        verify(concertDateJpaRepository).findConcertDatesByconcertId(100L);
+        verify(concertDateJpaRepository).findByConcertId(100L);
     }
 
     @Test
@@ -96,17 +96,17 @@ public class ConcertRepositoryAdapterTest {
         Concert concert = new Concert("콘서트");
         ConcertDate concertDate = new ConcertDate(concert, LocalDate.of(2025, 8, 3));
         List<Seat> seats = List.of(
-                new Seat(concertDate, "A1", SeatStatus.AVAILABLE),
-                new Seat(concertDate, "A2", SeatStatus.AVAILABLE)
+                new Seat(concertDate, 1, SeatStatus.AVAILABLE),
+                new Seat(concertDate, 2, SeatStatus.AVAILABLE)
         );
-        when(seatJpaRepository.findAvailableSeatsByConcertDateId(10L, SeatStatus.AVAILABLE)).thenReturn(seats);
+        when(seatJpaRepository.findByConcertDateIdAndStatus(10L, SeatStatus.AVAILABLE)).thenReturn(seats);
 
         // when
         List<Seat> result = concertRepositoryAdapter.findAvailableSeatsByConcertDateId(10L, SeatStatus.AVAILABLE);
 
         // then
         assertThat(result).hasSize(2).isEqualTo(seats);
-        verify(seatJpaRepository).findAvailableSeatsByConcertDateId(10L, SeatStatus.AVAILABLE);
+        verify(seatJpaRepository).findByConcertDateIdAndStatus(10L, SeatStatus.AVAILABLE);
     }
 
 }
