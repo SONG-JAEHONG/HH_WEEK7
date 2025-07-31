@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class SeatRepositoryAdpter implements  SeatRepository{
+public class SeatRepositoryAdapter implements  SeatRepository{
 
     private final SeatJpaRepository seatJpaRepository;
 

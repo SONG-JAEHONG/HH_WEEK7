@@ -15,12 +15,11 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class ConcertRepositoryAdapter implements ConcertRepository {
 
-    private ConcertJpaRepository concertJpaRepository;
-    private ConcertDateJpaRepository concertDateJpaRepository;
-    private SeatJpaRepository seatJpaRepository;
+    private final ConcertJpaRepository concertJpaRepository;
+    private final ConcertDateJpaRepository concertDateJpaRepository;
+    private final SeatJpaRepository seatJpaRepository;
 
 
     @Override
@@ -30,12 +29,12 @@ public class ConcertRepositoryAdapter implements ConcertRepository {
 
     @Override
     public List<ConcertDate> findConcertDatesByConcertId(Long concertId) {
-        return concertDateJpaRepository.findConcertDatesByconcertId(concertId);
+        return concertDateJpaRepository.findByConcertId(concertId);
     }
 
     @Override
     public List<Seat> findAvailableSeatsByConcertDateId(Long concertDateId, SeatStatus status) {
-        return seatJpaRepository.findAvailableSeatsByConcertDateId(concertDateId, status);
+        return seatJpaRepository.findByConcertDateIdAndStatus(concertDateId, status);
     }
 
     @Override

@@ -10,10 +10,9 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class UserRepositoryAdapter implements UserRepository {
 
-    private UserJpaRepository userJpaRepository;
+    private final UserJpaRepository userJpaRepository;
 
     public Optional<User> findUserById(Long userId){
         return userJpaRepository.findById(userId);

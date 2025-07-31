@@ -89,7 +89,7 @@ public class ConcertRepositoryAdapterTest {
         assertThat(result).hasSize(2).isEqualTo(concertDates);
         verify(concertDateJpaRepository).findByConcertId(100L);
     }
-  
+
     @Test
     void findAvailableSeatsByConcertDateId는_Available_상태의_좌석만_반환한다() {
         // given

@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 
-    List<Seat> findAvailableSeatsByConcertDateId(Long concertDateId, SeatStatus status);
+    List<Seat> findByConcertDateIdAndStatus(Long concertDateId, SeatStatus status);
     List<Seat> findByStatusAndExpireTimeBefore(SeatStatus status, LocalDateTime time);
 }

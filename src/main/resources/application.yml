@@ -2,7 +2,7 @@ spring:
   application:
     name: hhplus
   profiles:
-    active: local
+    active: test
   datasource:
     name: HangHaePlusDataSource
     type: com.zaxxer.hikari.HikariDataSource
@@ -17,7 +17,7 @@ spring:
     generate-ddl: false
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -26,8 +26,9 @@ spring:
 
   logging:
     level:
-      org.hibernate.SQL: debug
-      org.hibernate.type.descriptor.sql: trace
+    org.hibernate.SQL: DEBUG        # 실행 SQL 출력
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # 파라미터 값 바인딩 로그
+    org.springframework.data.jpa.repository.query: DEBUG  # JPA Repository 쿼리 로그
 
 
 ---
