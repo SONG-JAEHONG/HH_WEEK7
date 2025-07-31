@@ -38,9 +38,7 @@ public class ReservationRepositoryAdapterTest {
         assertThat(result).isPresent().contains(reservation);
         verify(reservationJpaRepository).findById(1L);
 
-
     }
-
 
     @Test
     void save는_reservation을_저장한다() {

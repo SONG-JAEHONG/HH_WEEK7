@@ -27,6 +27,7 @@ public class PaymentRepositoryAdapterTest {
         paymentRepositoryAdapter = new PaymentRepositoryAdapter(paymentJpaRepository);
     }
 
+
     @Test
      void save는_payment를_저장한다(){
 

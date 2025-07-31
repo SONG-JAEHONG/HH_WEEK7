@@ -30,7 +30,6 @@ public class SeatRepositoryAdapterTest {
         seatRepositoryAdapter = new SeatRepositoryAdapter(seatJpaRepository);
     }
 
-
     @Test
     void save는_seat을_저장한다(){
 
@@ -50,9 +49,7 @@ public class SeatRepositoryAdapterTest {
         List<Seat> expected = Collections.singletonList(mock(Seat.class));
         when(seatJpaRepository.findByStatusAndExpireTimeBefore(status, now)).thenReturn(expected);
 
-
         List<Seat> result = seatRepositoryAdapter.findByStatusAndBeforeExpire(status, now);
-
 
         assertThat(result).isEqualTo(expected);
         verify(seatJpaRepository).findByStatusAndExpireTimeBefore(status, now);

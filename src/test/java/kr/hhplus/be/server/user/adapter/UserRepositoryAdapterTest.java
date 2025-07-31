@@ -30,7 +30,6 @@ public class UserRepositoryAdapterTest {
     }
 
 
-
     @Test
     void findUserById는_유저의_정보를_반환한다(){
 
