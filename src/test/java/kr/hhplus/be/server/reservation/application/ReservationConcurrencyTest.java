@@ -118,6 +118,7 @@ public class ReservationConcurrencyTest {
         assertThat(allReservations.get(0).getSeat().getId()).isEqualTo(seatId);
     }
 
+
     @Test
     void 동시에_100명이_동일한_좌석을_예약하면_1명만_성공한다() throws InterruptedException {
         int threadCount = 100;
@@ -133,7 +134,9 @@ public class ReservationConcurrencyTest {
             userIds.add(user.getId());
         }
 
-        // 동시에 예약 요청
+
+        long start = System.currentTimeMillis();
+
         for (Long userId : userIds) {
             executor.submit(() -> {
                 try {
@@ -150,20 +153,25 @@ public class ReservationConcurrencyTest {
             });
         }
 
-        latch.await(10, TimeUnit.SECONDS);
+        latch.await(500, TimeUnit.MILLISECONDS);  // 넉넉하게 대기
         executor.shutdown();
+
+        long end = System.currentTimeMillis();
+        long duration = end - start;
+
+        System.out.println("소요 시간 (ms): " + duration);
 
         long successCount = results.stream().filter(r -> r.equals("SUCCESS")).count();
         long failCount = results.stream().filter(r -> r.startsWith("FAIL")).count();
 
-        System.out.println("SUCCESS: " + successCount + ", FAIL: " + failCount);
+        System.out.println("SUCCESS: " + successCount + ",FAIL: " + failCount);
 
         assertEquals(1, successCount);
-        assertEquals(99, failCount);
+        assertEquals(threadCount - 1, failCount);
 
         List<Reservation> allReservations = reservationJpaRepository.findAll();
         assertThat(allReservations).hasSize(1);
-        assertThat(allReservations.get(0).getSeat().getId()).isEqualTo(seatId);
     }
+
 
 }

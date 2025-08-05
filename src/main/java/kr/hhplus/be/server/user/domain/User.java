@@ -27,7 +27,9 @@ public class User extends BaseTimeEntity {
         this.point = point;
     }
 
-
+    public User(Object o, String s, long l) {
+        super();
+    }
 
 
     public void chargePoint(long amount){
