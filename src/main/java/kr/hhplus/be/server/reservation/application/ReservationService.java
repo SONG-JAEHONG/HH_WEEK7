@@ -14,6 +14,7 @@ import kr.hhplus.be.server.user.domain.User;
 import kr.hhplus.be.server.user.port.out.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class ReservationService implements ReservationUseCase {
     private final ConcertRepository concertRepository;
     private final SeatRepository seatRepository;
 
-
+    @Transactional
     @Override
     public ReservationResponse reserve(ReservationRequest reservationRequest, Long userId) {
         User user = userRepository.findUserById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));

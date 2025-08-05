@@ -19,7 +19,7 @@ public class SeatRepositoryAdapter implements  SeatRepository{
 
     @Override
     public Optional<Seat> findSeatById(Long id) {
-        return seatJpaRepository.findById(id);
+        return seatJpaRepository.findByIdForUpdate(id);
     }
 
     @Override
