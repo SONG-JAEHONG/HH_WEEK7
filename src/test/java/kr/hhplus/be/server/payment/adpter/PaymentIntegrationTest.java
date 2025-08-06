@@ -69,7 +69,7 @@ public class PaymentIntegrationTest {
         reservationJpaRepository.deleteAll();
         userJpaRepository.deleteAll();
 
-        var user = userJpaRepository.save(new User(null, 5000L));
+        var user = userJpaRepository.save(new User(1L, 5000L));
         var reservation = reservationJpaRepository.save(new Reservation(
                 null,
                 user,

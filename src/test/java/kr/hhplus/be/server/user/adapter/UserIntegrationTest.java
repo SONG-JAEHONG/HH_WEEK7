@@ -52,7 +52,7 @@ public class UserIntegrationTest {
 
         User user = new User();
 
-        user = userJpaRepository.save(new User(null, 1000L));
+        user = userJpaRepository.save(new User(1L, 1000L));
         savedUserId = user.getId();
     }
 
