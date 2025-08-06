@@ -1,9 +1,6 @@
 package kr.hhplus.be.server.user.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import kr.hhplus.be.server.common.base.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +17,9 @@ public class User extends BaseTimeEntity {
     private Long id;
     private Long point;
 
+    @Version
+    private Long version;
+
 
     //UserRepositoryAdapter 테스트용
     public User(long userId, long point) {
@@ -29,6 +29,10 @@ public class User extends BaseTimeEntity {
 
     public User(Object o, String s, long l) {
         super();
+    }
+
+    public User(long point) {
+        this.point = point;
     }
 
 

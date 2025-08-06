@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.user.application;
 
+import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.user.domain.User;
 import kr.hhplus.be.server.user.port.in.UserUseCase;
 import kr.hhplus.be.server.user.port.out.UserRepository;
@@ -14,6 +15,7 @@ public class UserService implements UserUseCase {
 
     private final UserRepository userRepository;
 
+    @Transactional
     @Override
     public void chargePoint(Long userId, Long amount) {
         User user = userRepository.findUserById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
