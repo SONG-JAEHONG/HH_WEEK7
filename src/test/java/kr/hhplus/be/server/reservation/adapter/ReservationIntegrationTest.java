@@ -75,7 +75,7 @@ public class ReservationIntegrationTest {
         concertJpaRepository.deleteAll();
         userJpaRepository.deleteAll();
 
-        User user = new User(null, 10000L);
+        User user = new User(1l, 10000L);
         user = userJpaRepository.save(user);
         savedUserId = user.getId();
 
