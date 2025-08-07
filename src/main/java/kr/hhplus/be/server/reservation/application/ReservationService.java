@@ -30,12 +30,31 @@ public class ReservationService implements ReservationUseCase {
     @Override
     public ReservationResponse reserve(ReservationRequest reservationRequest, Long userId) {
         User user = userRepository.findUserById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다." + userId));
+
+        Seat seat = seatHoldService.holdSeat(reservationRequest.seatId());
+
+        ConcertDate concertDate = concertRepository.findConcertDateById(reservationRequest.concertDateId()) //콘서트 날짜 ID 로 conertDate 조회
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 날짜입니다."));
+
+        Reservation reservation = Reservation.holding(user,concertDate,seat);
+        reservationRepository.save(reservation);
+
+        return new ReservationResponse(reservation.getId(), reservationRequest.seatId(), reservation.getStatus().name()) ;
+    }
+}
+
+/*
+ @Transactional
+ @Override
+    public ReservationResponse reserve(ReservationRequest reservationRequest, Long userId) {
+        User user = userRepository.findUserById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
         Seat seat = seatRepository.findSeatById(reservationRequest.seatId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 좌석입니다."));
 
         if(!seat.isAvailable()){ //좌석 상태 Available 인지 확인
             throw new IllegalStateException("이미 예약 중인 좌석입니다.");
         }
-        seat = seatHoldService.holdSeat(reservationRequest.seatId());
+        seat.hold(); //좌석 상태 Available -> Holding
+        seatRepository.save(seat);
 
         ConcertDate concertDate = concertRepository.findConcertDateById(reservationRequest.concertDateId()) //콘서트 날짜 ID 로 conertDate 조회
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 날짜입니다."));
@@ -48,5 +67,4 @@ public class ReservationService implements ReservationUseCase {
 
 
 
-    }
-}
+    }*/
