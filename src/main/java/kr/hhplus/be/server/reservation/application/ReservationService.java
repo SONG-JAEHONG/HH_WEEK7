@@ -29,7 +29,7 @@ public class ReservationService implements ReservationUseCase {
 
     @Override
     public ReservationResponse reserve(ReservationRequest reservationRequest, Long userId) {
-        User user = userRepository.findUserById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다." + userId));
+        User user = userRepository.findUserByIdOrThrow(userId);
 
         Seat seat = seatHoldService.holdSeat(reservationRequest.seatId());
 
