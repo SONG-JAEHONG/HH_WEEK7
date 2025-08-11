@@ -1,9 +1,9 @@
 package kr.hhplus.be.server.user.exception;
 
-import kr.hhplus.be.server.exception.BusinessException;
+import kr.hhplus.be.server.exception.DomainException;
 
 
-public class UserException extends BusinessException {
+public class UserException extends DomainException {
 
     private final UserErrorCode userErrorCode;
 

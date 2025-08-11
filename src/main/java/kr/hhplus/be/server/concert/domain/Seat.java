@@ -52,22 +52,22 @@ public class Seat extends BaseTimeEntity {
         this.concertDate = concertDate;
         this.seatNumber = i;
         this.status = seatStatus;
-        // expireTime이 Object로 되어있는데, 필요하다면 적절한 타입으로 변환하거나 할당하세요.
+
         if (o instanceof LocalDateTime) {
             this.expireTime = (LocalDateTime) o;
         } else {
-            this.expireTime = null; // 필요에 따라 기본값 지정
+            this.expireTime = null;
         }
     }
 
 
 
-    public void hold() {
+    public void hold(LocalDateTime expiresAt) {
         if (!isAvailable()) {
-            throw new IllegalStateException("이미 예약된 좌석입니다.");
+            throw new IllegalStateException("이미 예약(선점)된 좌석입니다.");
         }
         this.status = SeatStatus.HOLDING;
-        this.expireTime = LocalDateTime.now().plusMinutes(5);
+        this.expireTime = expiresAt;
     }
 
     public boolean isAvailable() {

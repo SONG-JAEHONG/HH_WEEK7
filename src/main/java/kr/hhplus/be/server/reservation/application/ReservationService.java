@@ -33,8 +33,7 @@ public class ReservationService implements ReservationUseCase {
 
         Seat seat = seatHoldService.holdSeat(reservationRequest.seatId());
 
-        ConcertDate concertDate = concertRepository.findConcertDateById(reservationRequest.concertDateId()) //콘서트 날짜 ID 로 conertDate 조회
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 날짜입니다."));
+        ConcertDate concertDate = concertRepository.findConcertDateByIdOrThrow(reservationRequest.concertDateId()) ;
 
         Reservation reservation = Reservation.holding(user,concertDate,seat);
         reservationRepository.save(reservation);

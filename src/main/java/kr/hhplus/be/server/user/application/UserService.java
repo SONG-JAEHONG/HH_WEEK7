@@ -18,14 +18,14 @@ public class UserService implements UserUseCase {
     @Transactional
     @Override
     public void chargePoint(Long userId, Long amount) {
-        User user = userRepository.findUserById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        User user = userRepository.findUserByIdOrThrow(userId);
         user.chargePoint(amount);
 
     }
 
     @Override
     public void usePoint(Long userId, Long amount) {
-        User user = userRepository.findUserById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        User user = userRepository.findUserByIdOrThrow(userId);
         user.usePoint(amount);
     }
 }

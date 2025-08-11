@@ -27,10 +27,9 @@ public class PaymentService implements PaymentUseCase {
 
     @Override
     public void pay(Long userId, Long reservationId, Long amount) {
-        User user = userRepository.findUserById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        User user = userRepository.findUserByIdOrThrow(userId);
         user.usePoint(amount);
-        Reservation reservation = reservationRepository.findReservationById(reservationId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예약입니다."));
+        Reservation reservation = reservationRepository.findReservationByIdOrThrow(reservationId);
 
         Payment payment = new Payment(null, amount, user, reservation, PaymentStatus.SUCCESS);
 

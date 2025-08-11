@@ -6,24 +6,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class SeatHoldService {
 
     private final SeatRepository seatRepository;
+    private final Clock clock;
 
     @Transactional
     public Seat holdSeat(Long seatId) {
-        Seat seat = seatRepository.findSeatById(seatId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 좌석입니다."));
-
-        if (!seat.isAvailable()) {
-            throw new IllegalStateException("이미 예약 중인 좌석입니다.");
-        }
-
-        seat.hold();       // 상태 변경
-        seatRepository.save(seat); // 업데이트 반영
-
+        Seat seat = seatRepository.findSeatByIdOrThrow(seatId);
+        LocalDateTime expiresAt = LocalDateTime.now(clock).plusMinutes(5);
+        seat.hold(expiresAt);
+        seatRepository.save(seat);
         return seat;
     }
 }
