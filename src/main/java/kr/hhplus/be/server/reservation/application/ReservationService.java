@@ -25,17 +25,19 @@ public class ReservationService implements ReservationUseCase {
     private final ConcertRepository concertRepository;
     private final SeatRepository seatRepository;
     private final SeatHoldService seatHoldService;
-
+    private final SeatHoldOrchestrator seatHoldOrchestrator;
 
     @Override
     public ReservationResponse reserve(ReservationRequest reservationRequest, Long userId) {
+
         User user = userRepository.findUserByIdOrThrow(userId);
 
-        Seat seat = seatHoldService.holdSeat(reservationRequest.seatId());
+        Seat seat = seatHoldOrchestrator.holdSeatWithLock(reservationRequest.seatId());
 
         ConcertDate concertDate = concertRepository.findConcertDateByIdOrThrow(reservationRequest.concertDateId()) ;
 
         Reservation reservation = Reservation.holding(user,concertDate,seat);
+
         reservationRepository.save(reservation);
 
         return new ReservationResponse(reservation.getId(), reservationRequest.seatId(), reservation.getStatus().name()) ;

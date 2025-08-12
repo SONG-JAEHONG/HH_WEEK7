@@ -29,6 +29,8 @@ dependencyManagement {
 	}
 }
 
+val redissonVersion = "3.27.2"
+
 dependencies {
     // Spring
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -44,6 +46,7 @@ dependencies {
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:mysql")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testImplementation("com.redis:testcontainers-redis:2.2.4")
 
 	// Lombok 추가
 	compileOnly("org.projectlombok:lombok:1.18.30")
@@ -51,6 +54,15 @@ dependencies {
 
 	testCompileOnly("org.projectlombok:lombok:1.18.30")
 	testAnnotationProcessor ("org.projectlombok:lombok:1.18.30")
+
+	// Redis (Spring Data Redis: 기본 클라이언트는 Lettuce)
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+	// Redisson (분산 락 등 고수준 기능)
+	implementation("org.redisson:redisson:$redissonVersion")
+
+
+
 }
 
 tasks.withType<Test> {
