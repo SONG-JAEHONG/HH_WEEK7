@@ -12,14 +12,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class ConcertService implements ConcertUseCase {
 
     private final ConcertRepository concertRepository;
 
-
+    @Cacheable(cacheNames = "concert:list", key = "'all'")
+    @Transactional(readOnly = true)
     @Override
     public List<ConcertResponse> getAllConcerts(){
         return concertRepository.findAllConcerts().stream()
@@ -27,6 +29,8 @@ public class ConcertService implements ConcertUseCase {
                 .toList();
     }
 
+    @Cacheable(cacheNames = "concert:dates", key = "#concertId")
+    @Transactional(readOnly = true)
     @Override
     public List<ConcertDateResponse> getConcertDates(Long concertId) {
         return concertRepository.findConcertDatesByConcertId(concertId).stream()
