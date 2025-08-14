@@ -12,10 +12,24 @@ import java.util.Optional;
 public interface SeatRepository {
 
     Optional<Seat> findSeatById(Long id);
-    void save(Seat seat);
-    List<Seat> findByStatusAndBeforeExpire(SeatStatus status, LocalDateTime time);
 
     default Seat findSeatByIdOrThrow(Long id){
         return findSeatById(id).orElseThrow(() -> new ConcertException(ConcertErrorCode.SEAT_NOT_FOUND,"존재하지 않는 좌석입니다. seatId = " + id));
     }
+
+    void save(Seat seat);
+
+    List<Seat> findByStatusAndBeforeExpire(SeatStatus status, LocalDateTime time);
+
+    Optional<Seat> findSeatByIdWithLock(Long id);
+
+    default Seat findSeatByIdWithLockOrThrow(Long id) {
+        return findSeatByIdWithLock(id)
+                .orElseThrow(() -> new ConcertException(
+                        ConcertErrorCode.SEAT_NOT_FOUND,
+                        "존재하지 않는 좌석입니다. seatId = " + id
+                ));
+    }
+
+
 }

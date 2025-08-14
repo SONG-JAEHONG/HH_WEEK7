@@ -14,11 +14,15 @@ public class SeatHoldOrchestrator {
     private final SeatHoldService seatHoldService;
 
     public Seat holdSeatWithLock(Long seatId) {
-        String key = "lock:seat:" + seatId; // 좌석별 키
+        String key = "lock:seat:" + seatId;
+
+        Duration wait = Duration.ofMillis(0);
+        Duration lease = Duration.ofMillis(2000);
+
         return lockManager.lock(
                 key,
-                Duration.ofMillis(200),
-                Duration.ofSeconds(3),
+                wait,
+                lease,
                 () -> seatHoldService.holdSeat(seatId)
         );
     }

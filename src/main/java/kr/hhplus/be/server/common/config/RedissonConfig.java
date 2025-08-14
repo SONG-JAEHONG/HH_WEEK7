@@ -11,8 +11,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RedissonConfig {
 
-    @Value("${spring.redis.host}") String host;
-    @Value("${spring.redis.port}") int port;
+    @Value("${spring.data.redis.host}")
+    private String host;
+
+    @Value("${spring.data.redis.port}")
+    private int port;
+
     @Value("${app.redisson.watchdog-timeout-ms:30000}") long watchdogTimeoutMs;
 
     @Bean(destroyMethod = "shutdown")

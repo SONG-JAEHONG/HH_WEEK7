@@ -28,6 +28,9 @@ public class Seat extends BaseTimeEntity {
 
     private LocalDateTime expireTime;
 
+    @Version
+    private Long version;
+
     // concertRepositoryAdapter 테스트용
     public Seat(ConcertDate concertDate, int seatNumber, SeatStatus seatStatus) {
 

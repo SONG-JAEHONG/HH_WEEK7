@@ -2,12 +2,14 @@ import http from 'k6/http';
 import { check } from 'k6';
 
 export const options = {
-  vus: 100000,
-  iterations: 100000,
+  vus: 50,
+
+  iterations: 50,
+
 };
 
 export default function () {
-  const userId = __ITER + 1;
+  const userId = __ITER+1;
 
   const reservationPayload = JSON.stringify({
     userId: userId,
@@ -19,7 +21,11 @@ export default function () {
     headers: { 'Content-Type': 'application/json' },
   });
 
-  check(res, {
-    'status is 200': (r) => r.status === 200,
-  });
+ check(res, {
+   'status is 200 or 409 or 423': (r) =>
+       r.status === 200 || r.status === 409 || r.status === 423,
+ });
+
+  console.log(`ITER ${__ITER}: status = ${res.status}, body = ${res.body}`);
+
 }
