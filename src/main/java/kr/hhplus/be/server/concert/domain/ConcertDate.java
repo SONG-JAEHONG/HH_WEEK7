@@ -28,10 +28,16 @@ public class ConcertDate extends BaseTimeEntity {
     @JoinColumn(name = "concert_id")
     private Concert concert;
 
-
+    @JoinColumn(name = "open_at")
     private LocalDateTime openAt;
+
+    @JoinColumn(name = "sellout_at")
     private LocalDateTime selloutAt;
+
+    @JoinColumn(name = "sellout_seconds")
     private Long selloutSeconds;
+
+    @JoinColumn(name = "total_seats")
     private Integer totalSeats;
 
     //콘서트 생성

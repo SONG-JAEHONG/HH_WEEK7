@@ -1,12 +1,16 @@
 package kr.hhplus.be.server.concert.application;
 
+import ch.qos.logback.core.CoreConstants;
+import ch.qos.logback.core.net.SyslogOutputStream;
 import kr.hhplus.be.server.concert.domain.Concert;
 import kr.hhplus.be.server.concert.domain.ConcertDate;
+import kr.hhplus.be.server.concert.infra.event.ConcertDateCreateEvent;
 import kr.hhplus.be.server.concert.infra.web.dto.CreateConcertRequest;
 import kr.hhplus.be.server.concert.infra.web.dto.CreateConcertResponse;
 import kr.hhplus.be.server.concert.port.in.ConcertCommandUseCase;
 import kr.hhplus.be.server.concert.port.out.ConcertRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +23,7 @@ import java.util.List;
 public class ConcertCommandService implements ConcertCommandUseCase {
 
     private final ConcertRepository concertRepository;
-
+    private final ApplicationEventPublisher publisher;
 
     @Override
     public CreateConcertResponse createConcert(CreateConcertRequest request) {
@@ -31,6 +35,7 @@ public class ConcertCommandService implements ConcertCommandUseCase {
                     new ConcertDate(concert, d.concertDate(), d.openAt(), d.totalSeats())
             );
             dateIds.add(cd.getId());
+            publisher.publishEvent(new ConcertDateCreateEvent(concert.getId(), d.totalSeats()));
         }
 
         return new CreateConcertResponse(concert.getId(), dateIds);

@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 		"kr.hhplus.be.server.concert.infra.persistence",
 		"kr.hhplus.be.server.payment.infra.persistence",
 		"kr.hhplus.be.server.reservation.infra.persistence",
-		"kr.hhplus.be.server.user.infra.persistence",
+		"kr.hhplus.be.server.user.infra.per-+sistence",
 })
 @EntityScan(basePackages = "kr.hhplus.be.server")
 @EnableScheduling
