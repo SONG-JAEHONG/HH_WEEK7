@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,19 @@ public class ConcertDate extends BaseTimeEntity {
     @JoinColumn(name = "concert_id")
     private Concert concert;
 
+
+    private LocalDateTime openAt;
+    private LocalDateTime selloutAt;
+    private Long selloutSeconds;
+    private Integer totalSeats;
+
+    //콘서트 생성
+    public ConcertDate(Concert concert, LocalDate date, LocalDateTime openAt, int totalSeats) {
+        this.concert   = concert;
+        this.concertDate = date;
+        this.openAt    = openAt;
+        this.totalSeats= totalSeats;
+    }
 
     //concertIntegraion 테스트용
 

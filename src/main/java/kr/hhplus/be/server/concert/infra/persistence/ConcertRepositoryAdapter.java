@@ -42,5 +42,15 @@ public class ConcertRepositoryAdapter implements ConcertRepository {
         return concertDateJpaRepository.findById(concertDateId);
     }
 
+    @Override
+    public Concert save(Concert concert) {
+        return concertJpaRepository.save(concert);
+    }
+
+    @Override
+    public ConcertDate save(ConcertDate concertDate) {
+        return concertDateJpaRepository.save(concertDate);
+    }
+
 
 }

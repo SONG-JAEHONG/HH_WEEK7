@@ -61,6 +61,9 @@ dependencies {
 	// Redisson (분산 락 등 고수준 기능)
 	implementation("org.redisson:redisson:$redissonVersion")
 
+	//validation
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+
 
 
 }
