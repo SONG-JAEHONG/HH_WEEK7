@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.concert.infra.redis;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
@@ -14,6 +15,10 @@ public class RedisRankKeys {
 
     public static String daily(LocalDateTime selloutAt) {
         return "rank:sellout:daily:" + DAILY_FMT.format(selloutAt);
+    }
+
+    public static String daily(LocalDate date) {
+        return "rank:sellout:daily:" + DAILY_FMT.format(date);
     }
 
     public static String member(Long concertId, Long concertDateId) {

@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/command/concerts")
+@RequestMapping("/concerts/command")
 @RequiredArgsConstructor
 public class ConcertCommandController {
 
