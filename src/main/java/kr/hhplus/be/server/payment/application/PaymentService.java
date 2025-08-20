@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.payment.application;
 
+import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.concert.domain.ConcertDate;
 import kr.hhplus.be.server.concert.domain.Seat;
 import kr.hhplus.be.server.concert.infra.event.DecrRemainSeatAfterPaymentEvent;
@@ -29,6 +30,7 @@ public class PaymentService implements PaymentUseCase {
     private final ApplicationEventPublisher publisher;
 
     @Override
+    @Transactional
     public void pay(Long userId, Long reservationId, Long amount) {
         User user = userRepository.findUserByIdOrThrow(userId);
         user.usePoint(amount);

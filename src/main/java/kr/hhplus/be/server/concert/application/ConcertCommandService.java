@@ -26,6 +26,7 @@ public class ConcertCommandService implements ConcertCommandUseCase {
     private final ApplicationEventPublisher publisher;
 
     @Override
+    @Transactional
     public CreateConcertResponse createConcert(CreateConcertRequest request) {
         Concert concert = concertRepository.save(new Concert(request.title()));
 

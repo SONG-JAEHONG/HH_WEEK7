@@ -71,9 +71,9 @@ public class PaymentIntegrationTest {
 
         var user = userJpaRepository.save(new User(1L, 5000L));
         var reservation = reservationJpaRepository.save(new Reservation(
-                null,
+                (Long) null,
                 user,
-                null,
+                (Concert) null,
                 null,
                 ReservationStatus.HOLDING
         ));
