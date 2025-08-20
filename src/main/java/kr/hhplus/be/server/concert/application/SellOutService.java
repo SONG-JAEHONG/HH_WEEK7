@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class SellOutService implements SellOutUseCase {
 
-
     private final ConcertRepository concertRepository;
     private final SelloutRankWriter rankWriter;
     private final Clock clock;
@@ -26,17 +25,16 @@ public class SellOutService implements SellOutUseCase {
     @Transactional
     public void recordRank(Long concertDateId) {
 
+        LocalDateTime now = LocalDateTime.now(clock);
         ConcertDate cd = concertRepository.findConcertDateByIdOrThrow(concertDateId);
 
-        LocalDateTime now = LocalDateTime.now(clock);
         long seconds = Duration.between(cd.getOpenAt(), now).getSeconds();
-        if (seconds < 0) seconds = 0;
 
         int updated = concertRepository.updateSellOut(concertDateId, now, seconds);
 
-        if (updated == 1) {
+        if(updated == 1){
             Long concertId = cd.getConcert().getId();
-            rankWriter.pushDaily(concertId, concertDateId, seconds, now);
+            rankWriter.pushFastAll(concertId, concertDateId, seconds, now);
         }
 
     }

@@ -1,9 +1,7 @@
 package kr.hhplus.be.server.concert.infra.event.listener;
 
-import kr.hhplus.be.server.concert.application.SellOutService;
 import kr.hhplus.be.server.concert.infra.event.DecrRemainSeatAfterPaymentEvent;
 import kr.hhplus.be.server.concert.infra.redis.RemainSeatCount;
-import kr.hhplus.be.server.concert.infra.redis.SelloutRankWriter;
 import kr.hhplus.be.server.concert.port.in.SellOutUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,7 +18,8 @@ public class DecrRemainSeatAfterPaymentEventListener {
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onAfterCommit(DecrRemainSeatAfterPaymentEvent e) {
-        RemainSeatCount.Result r = remainSeatCount.decrRemainSeat(e.concertDateId());
+        String member = e.concertId() + ":" + e.concertDateId();
+        RemainSeatCount.Result r = remainSeatCount.decrRemainSeat(e.concertDateId(), member);
         if (r == RemainSeatCount.Result.SOLD_OUT) {
             sellOutUseCase.recordRank(e.concertDateId());
         }

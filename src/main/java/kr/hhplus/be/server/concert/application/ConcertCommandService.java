@@ -35,7 +35,7 @@ public class ConcertCommandService implements ConcertCommandUseCase {
                     new ConcertDate(concert, d.concertDate(), d.openAt(), d.totalSeats())
             );
             dateIds.add(cd.getId());
-            publisher.publishEvent(new ConcertDateCreateEvent(concert.getId(), d.totalSeats()));
+            publisher.publishEvent(new ConcertDateCreateEvent(cd.getId(), d.totalSeats()));
         }
 
         return new CreateConcertResponse(concert.getId(), dateIds);

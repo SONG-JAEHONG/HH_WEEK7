@@ -14,11 +14,10 @@ public class RedisSelloutRankWriter implements SelloutRankWriter {
     private final StringRedisTemplate redis;
 
     @Override
-    public void pushDaily(Long concertId, Long concertDateId, long selloutSeconds, LocalDateTime selloutAt) {
+    public void pushFastAll(Long concertId, Long concertDateId, long selloutSeconds, LocalDateTime selloutAt) {
         String member = RedisRankKeys.member(concertId, concertDateId);
-        double score = -1.0 * selloutSeconds;
-        String dailyKey = RedisRankKeys.daily(selloutAt);
-
-        redis.opsForZSet().add(dailyKey, member, score);
+        double baseSec = 24 * 60 * 60;
+        double fastNorm = 1.0 - Math.min(1.0, Math.max(0.0, selloutSeconds / baseSec));
+        redis.opsForZSet().add(RedisRankKeys.fastAll(), member, fastNorm);
     }
 }

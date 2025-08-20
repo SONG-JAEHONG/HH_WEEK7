@@ -4,6 +4,6 @@ import java.time.LocalDateTime;
 
 public interface SelloutRankWriter {
 
-    void pushDaily(Long concertId, Long concertDateId, long selloutSeconds, LocalDateTime selloutAt);
+    void pushFastAll(Long concertId, Long concertDateId, long selloutSeconds, LocalDateTime selloutAt);
 
 }

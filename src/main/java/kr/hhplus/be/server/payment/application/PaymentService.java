@@ -46,6 +46,7 @@ public class PaymentService implements PaymentUseCase {
         paymentRepository.save(payment);
 
         Long ConcertDateId = seat.getConcertDate().getId();
-        publisher.publishEvent(new DecrRemainSeatAfterPaymentEvent(reservation.getId(), ConcertDateId));
+        Long ConcertId = seat.getConcertDate().getConcert().getId();
+        publisher.publishEvent(new DecrRemainSeatAfterPaymentEvent(reservation.getId(),ConcertId,ConcertDateId));
     }
 }
