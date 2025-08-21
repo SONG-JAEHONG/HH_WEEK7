@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.redis;
 
+import kr.hhplus.be.server.concert.infra.redis.RedisRankKeys;
 import kr.hhplus.be.server.concert.infra.web.dto.CreateConcertRequest;
 import kr.hhplus.be.server.concert.port.in.ConcertCommandUseCase;
 import kr.hhplus.be.server.concert.infra.persistence.ConcertDateJpaRepository;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,8 +31,10 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.offset;
 import static org.awaitility.Awaitility.await;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -83,7 +87,7 @@ class Step2_PaymentDecrementsRemainIT {
         var concertDate = concertDateRepo.findById(concertDateId).orElseThrow();
         var concert = concertDate.getConcert();
 
-        String totalKey  = RedisKeys.TotalSeat(concertDateId);
+        String totalKey = RedisKeys.TotalSeat(concertDateId);
         String remainKey = RedisKeys.RemainSeat(concertDateId);
 
 
@@ -126,5 +130,25 @@ class Step2_PaymentDecrementsRemainIT {
         await().atMost(Duration.ofSeconds(3)).untilAsserted(() -> {
             assertThat(redis.opsForValue().get(remainKey)).isEqualTo("149");
         });
+
+        await().atMost(Duration.ofSeconds(3)).untilAsserted(() -> {
+            Set<ZSetOperations.TypedTuple<String>> tuples =
+                    redis.opsForZSet().rangeWithScores(RedisRankKeys.ratioAll(), 0, -1);
+
+            assertThat(tuples).isNotNull().hasSize(1);
+
+            ZSetOperations.TypedTuple<String> only = tuples.iterator().next();
+
+
+            String expectedMember = RedisRankKeys.member(concert.getId(), concertDateId);
+            assertThat(only.getValue()).isEqualTo(expectedMember);
+
+
+            double expectedScore = 1.0 / totalSeats;
+            assertThat(only.getScore()).isNotNull();
+            assertThat(only.getScore()).isCloseTo(expectedScore, org.assertj.core.data.Offset.offset(1e-9));
+        });
+
     }
+
 }
