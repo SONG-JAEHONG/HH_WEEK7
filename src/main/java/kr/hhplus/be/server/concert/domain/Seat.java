@@ -32,6 +32,11 @@ public class Seat extends BaseTimeEntity {
     @Version
     private Long version;
 
+    @Column(name = "fencing_token", nullable = false)
+    private long fencingToken;
+
+
+
     // concertRepositoryAdapter 테스트용
     public Seat(ConcertDate concertDate, int seatNumber, SeatStatus seatStatus) {
 

@@ -31,5 +31,6 @@ public interface SeatRepository {
                 ));
     }
 
+    int tryHoldWithToken(Long seatId, LocalDateTime expiresAt, LocalDateTime now, long token, SeatStatus available , SeatStatus holding);
 
 }

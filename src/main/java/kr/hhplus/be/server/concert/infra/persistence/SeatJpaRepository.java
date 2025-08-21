@@ -5,6 +5,7 @@ import kr.hhplus.be.server.concert.domain.Seat;
 import kr.hhplus.be.server.concert.domain.SeatStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -22,4 +23,24 @@ public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 
     List<Seat> findByConcertDateIdAndStatus(Long concertDateId, SeatStatus status);
     List<Seat> findByStatusAndExpireTimeBefore(SeatStatus status, LocalDateTime time);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("""
+       update Seat s
+          set s.status = :holding,
+              s.expireTime = :expiresAt,
+              s.fencingToken = :token
+        where s.id = :seatId
+          and ( s.status = :available
+                or (s.status = :holding and s.expireTime < :now) )
+          and s.fencingToken < :token
+       """)
+    int tryHoldWithToken(@Param("seatId") Long seatId,
+                         @Param("expiresAt") LocalDateTime expiresAt,
+                         @Param("now") LocalDateTime now,
+                         @Param("token") long token,
+                         @Param("available") SeatStatus available,
+                         @Param("holding") SeatStatus holding);
+
+
 }
