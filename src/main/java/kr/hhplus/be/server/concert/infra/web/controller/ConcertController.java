@@ -1,17 +1,15 @@
 package kr.hhplus.be.server.concert.infra.web.controller;
 
 
+import jakarta.validation.Valid;
 import kr.hhplus.be.server.concert.domain.Concert;
 import kr.hhplus.be.server.concert.domain.ConcertDate;
-import kr.hhplus.be.server.concert.infra.web.dto.ConcertDateResponse;
-import kr.hhplus.be.server.concert.infra.web.dto.ConcertResponse;
-import kr.hhplus.be.server.concert.infra.web.dto.SeatResponse;
+import kr.hhplus.be.server.concert.infra.web.dto.*;
+import kr.hhplus.be.server.concert.port.in.ConcertCommandUseCase;
 import kr.hhplus.be.server.concert.port.in.ConcertUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +19,13 @@ import java.util.List;
 public class ConcertController {
 
     private final ConcertUseCase concertUseCase;
+    private final ConcertCommandUseCase concertCommandUseCase;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreateConcertResponse create(@RequestBody @Valid CreateConcertRequest req) {
+        return concertCommandUseCase.createConcert(req);
+    }
 
     @GetMapping
     public List<ConcertResponse> getAllConcerts(){

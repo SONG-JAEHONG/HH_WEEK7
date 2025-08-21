@@ -19,9 +19,8 @@ public class Concert extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
+
     private String title;
-
-
 
     public Concert(Long id, String title) {
         this.id = id;

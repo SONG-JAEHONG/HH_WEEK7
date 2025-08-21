@@ -3,6 +3,7 @@ package kr.hhplus.be.server.user.domain;
 import jakarta.persistence.*;
 import kr.hhplus.be.server.common.base.BaseTimeEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,8 +18,8 @@ public class User extends BaseTimeEntity {
     private Long id;
     private Long point;
 
-    @Version
-    private Long version;
+   // @Version
+    //private Long version;
 
 
     //UserRepositoryAdapter 테스트용
@@ -27,14 +28,16 @@ public class User extends BaseTimeEntity {
         this.point = point;
     }
 
-    public User(Object o, String s, long l) {
+
+    public User(Object o, String user1, long l) {
         super();
     }
 
-    public User(long point) {
+    @Builder
+    public User(long point){
         this.point = point;
-    }
 
+    }
 
     public void chargePoint(long amount){
 
@@ -48,9 +51,5 @@ public class User extends BaseTimeEntity {
 
         this.point -= amount;
     }
-
-
-
-
 
 }

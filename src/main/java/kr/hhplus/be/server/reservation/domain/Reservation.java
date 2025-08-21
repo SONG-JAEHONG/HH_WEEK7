@@ -2,10 +2,12 @@ package kr.hhplus.be.server.reservation.domain;
 
 import jakarta.persistence.*;
 import kr.hhplus.be.server.common.base.BaseTimeEntity;
+import kr.hhplus.be.server.concert.domain.Concert;
 import kr.hhplus.be.server.concert.domain.ConcertDate;
 import kr.hhplus.be.server.concert.domain.Seat;
 import kr.hhplus.be.server.user.domain.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,6 +37,17 @@ public class Reservation extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
+    public Reservation(Long id, User user, Concert concert, ConcertDate concertDt, ReservationStatus reservationStatus) {
+        super();
+    }
+
+    @Builder
+    public Reservation(User user,  ConcertDate concertDate, Seat seat, ReservationStatus status) {
+        this.user = user;
+        this.concertDate = concertDate;
+        this.seat = seat;
+        this.status = status;
+    }
 
     public static Reservation holding(User user,ConcertDate concertDate, Seat seat) {
         Reservation reservation = new Reservation();
@@ -54,4 +67,7 @@ public class Reservation extends BaseTimeEntity {
     }
 
 
+    public void setUser(User user) {
+
+    }
 }

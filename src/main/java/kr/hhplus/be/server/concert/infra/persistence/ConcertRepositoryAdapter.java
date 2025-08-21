@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +41,21 @@ public class ConcertRepositoryAdapter implements ConcertRepository {
     @Override
     public Optional<ConcertDate> findConcertDateById(Long concertDateId) {
         return concertDateJpaRepository.findById(concertDateId);
+    }
+
+    @Override
+    public Concert save(Concert concert) {
+        return concertJpaRepository.save(concert);
+    }
+
+    @Override
+    public ConcertDate save(ConcertDate concertDate) {
+        return concertDateJpaRepository.save(concertDate);
+    }
+
+    @Override
+    public int updateSellOut(Long dateId, LocalDateTime now, long seconds) {
+        return concertDateJpaRepository.updateSellOut(dateId, now, seconds);
     }
 
 

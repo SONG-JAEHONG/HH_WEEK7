@@ -28,6 +28,18 @@ public class SeatRepositoryAdapter implements  SeatRepository{
     }
 
     @Override
+    public int tryHoldWithToken(Long seatId,
+                                LocalDateTime expiresAt,
+                                LocalDateTime now,
+                                long token,
+                                SeatStatus available,
+                                SeatStatus holding) {
+        return seatJpaRepository.tryHoldWithToken(
+                seatId, expiresAt, now, token, available, holding
+        );
+    }
+
+    @Override
     public void save(Seat seat) {
         seatJpaRepository.save(seat);
     }

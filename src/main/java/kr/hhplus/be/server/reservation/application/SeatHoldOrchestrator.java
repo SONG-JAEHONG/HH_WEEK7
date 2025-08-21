@@ -14,16 +14,15 @@ public class SeatHoldOrchestrator {
     private final SeatHoldService seatHoldService;
 
     public Seat holdSeatWithLock(Long seatId) {
-        String key = "lock:seat:" + seatId;
+        String lockKey = "lock:seat:" + seatId;
+        String tokenKey = "seq:fence:seat:" + seatId;
 
         Duration wait = Duration.ofMillis(0);
         Duration lease = Duration.ofMillis(2000);
 
-        return lockManager.lock(
-                key,
-                wait,
-                lease,
-                () -> seatHoldService.holdSeat(seatId)
+        return lockManager.lockWithFencingToken(
+                lockKey, tokenKey, wait, lease,
+                token -> seatHoldService.holdSeat(seatId, token)
         );
     }
 }

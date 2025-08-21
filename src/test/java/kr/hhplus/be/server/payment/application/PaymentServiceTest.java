@@ -11,6 +11,7 @@ import kr.hhplus.be.server.user.domain.User;
 import kr.hhplus.be.server.user.port.out.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ class PaymentServiceTest {
     private UserRepository userRepository;
     private ReservationRepository reservationRepository;
     private SeatRepository seatRepository;
+    private ApplicationEventPublisher publisher;
 
     private PaymentService paymentService;
 
@@ -32,8 +34,9 @@ class PaymentServiceTest {
         userRepository = mock(UserRepository.class);
         reservationRepository = mock(ReservationRepository.class);
         seatRepository = mock(SeatRepository.class);
+        publisher = mock(ApplicationEventPublisher.class);
 
-        paymentService = new PaymentService(userRepository, paymentRepository,  reservationRepository, seatRepository);
+        paymentService = new PaymentService(userRepository, paymentRepository,  reservationRepository, seatRepository, publisher );
     }
 
     @Test

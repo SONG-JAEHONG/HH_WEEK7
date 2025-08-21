@@ -2,6 +2,7 @@ package kr.hhplus.be.server.concert.domain;
 
 import jakarta.persistence.*;
 import kr.hhplus.be.server.common.base.BaseTimeEntity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,6 +32,11 @@ public class Seat extends BaseTimeEntity {
     @Version
     private Long version;
 
+    @Column(name = "fencing_token", nullable = false)
+    private long fencingToken;
+
+
+
     // concertRepositoryAdapter 테스트용
     public Seat(ConcertDate concertDate, int seatNumber, SeatStatus seatStatus) {
 
@@ -38,6 +44,14 @@ public class Seat extends BaseTimeEntity {
         this.seatNumber = seatNumber;
         this.status = seatStatus;
     }
+
+    @Builder
+    private Seat(ConcertDate concertDate, Integer number, SeatStatus status) {
+        this.concertDate = concertDate;
+        this.seatNumber = number;
+        this.status = status;
+    }
+
 
     // concertService 테스트용
     public Seat(long l, ConcertDate concertDate, int i, SeatStatus seatStatus, LocalDateTime localDateTime) {
@@ -50,6 +64,7 @@ public class Seat extends BaseTimeEntity {
     }
 
     // concertIntegration 테스트용
+
     public Seat(ConcertDate concertDate, int i, SeatStatus seatStatus, Object o) {
 
         this.concertDate = concertDate;
@@ -62,6 +77,7 @@ public class Seat extends BaseTimeEntity {
             this.expireTime = null;
         }
     }
+
 
 
 
