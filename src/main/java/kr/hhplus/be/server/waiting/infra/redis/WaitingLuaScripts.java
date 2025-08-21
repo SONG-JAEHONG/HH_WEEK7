@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.waiting.infra.redis;
 
-public class WaitingLuaScripts {
+public final class WaitingLuaScripts {
 
     private WaitingLuaScripts(){}
 
